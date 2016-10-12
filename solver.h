@@ -12,6 +12,7 @@ using namespace std;
 
 struct Solver {
   vector<pair<shared_ptr<Expr>, vector<shared_ptr<Expr>>>> rules;
+  map<string, shared_ptr<Expr>> vars;
   Solver(vector<pair<shared_ptr<Expr>, vector<shared_ptr<Expr>>>>&& rules)
       : rules(rules) {}
   pair<shared_ptr<Expr>, vector<shared_ptr<Expr>>> inst(
@@ -101,10 +102,15 @@ struct Solver {
   }
   bool solve(vector<shared_ptr<Expr>> goals,
              map<shared_ptr<Expr>, shared_ptr<Expr>>& par) {
-//    for (size_t i = 0; i < goals.size(); i++) {
-//      cout << to_string(goals[i], par) << (i + 1 == goals.size() ? ".\n" : ",");
-//    }
+    //    for (size_t i = 0; i < goals.size(); i++) {
+    //      cout << to_string(goals[i], par) << (i + 1 == goals.size() ? ".\n" :
+    //      ",");
+    //    }
     if (goals.empty()) {
+      cout << endl;
+      for (auto& v : vars) {
+        cout << v.first << " = " << to_string(v.second, par) << endl;
+      }
       return true;
     } else {
       for (auto& rule : rules) {
@@ -131,10 +137,10 @@ struct Solver {
     }
   }
   bool solve(shared_ptr<Expr> expr) {
-    map<string, shared_ptr<Expr>> m;
     vector<shared_ptr<Expr>> goals;
     map<shared_ptr<Expr>, shared_ptr<Expr>> par;
-    goals.push_back(inst(expr, m));
+    vars.clear();
+    goals.push_back(inst(expr, vars));
     return solve(goals, par);
   }
 };
