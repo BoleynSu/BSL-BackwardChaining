@@ -1,0 +1,3 @@
+willDie(a).
+willDie(b).
+
