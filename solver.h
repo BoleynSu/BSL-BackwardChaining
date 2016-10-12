@@ -107,9 +107,11 @@ struct Solver {
     //      ",");
     //    }
     if (goals.empty()) {
-      cout << endl;
-      for (auto& v : vars) {
-        cout << v.first << " = " << to_string(v.second, par) << endl;
+      if (vars.size()) {
+        cout << endl;
+        for (auto& v : vars) {
+          cout << v.first << " = " << to_string(v.second, par) << endl;
+        }
       }
       return true;
     } else {
