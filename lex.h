@@ -98,6 +98,19 @@ struct Lexer {
             is.putback(c);
           }
         }
+      } else if (c == '%') {
+        for (;;) {
+          c = is.get();
+          if (c == EOF) {
+            break;
+          }
+          if (c == '\r' || c == '\n') {
+            is.putback(c);
+            break;
+          }
+          data.push_back(c);
+          position.endColumn++;
+        }
       }
     }
     if (data == "(") {
@@ -116,7 +129,7 @@ struct Lexer {
         token_type = VAR;
       } else if (('a' <= c && c <= 'z') || c == '_' || c == '\'') {
         token_type = CONST;
-      } else if (c == ' ' || c == '\t' || c == '\n' || c == '\r') {
+      } else if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '%') {
         token_type = SPACE;
       } else {
         token_type = ERROR;
