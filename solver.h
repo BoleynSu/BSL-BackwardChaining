@@ -52,6 +52,7 @@ struct Solver {
       return x;
     }
   }
+#ifdef SOUND
   bool occ(shared_ptr<Expr> a, shared_ptr<Expr> b,
            map<shared_ptr<Expr>, shared_ptr<Expr>>& p) {
     if (b->is_var()) {
@@ -65,20 +66,25 @@ struct Solver {
       return false;
     }
   }
+#endif
   bool unify(shared_ptr<Expr> a, shared_ptr<Expr> b,
              map<shared_ptr<Expr>, shared_ptr<Expr>>& p) {
     a = find(a, p);
     b = find(b, p);
     if (a != b) {
       if (a->is_var()) {
+#ifdef SOUND
         if (occ(a, b, p)) {
           return false;
         }
+#endif
         p[a] = b;
       } else if (b->is_var()) {
+#ifdef SOUND
         if (occ(b, a, p)) {
           return false;
         }
+#endif
         p[b] = a;
       } else {
         if (a->f == b->f && a->xs.size() == b->xs.size()) {
