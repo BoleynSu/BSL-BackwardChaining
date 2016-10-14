@@ -52,14 +52,33 @@ struct Solver {
       return x;
     }
   }
+  bool occ(shared_ptr<Expr> a, shared_ptr<Expr> b,
+           map<shared_ptr<Expr>, shared_ptr<Expr>>& p) {
+    if (b->is_var()) {
+      return a == b;
+    } else {
+      for (size_t i = 0; i < b->xs.size(); i++) {
+        if (occ(a, find(b->xs[i], p), p)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
   bool unify(shared_ptr<Expr> a, shared_ptr<Expr> b,
              map<shared_ptr<Expr>, shared_ptr<Expr>>& p) {
     a = find(a, p);
     b = find(b, p);
     if (a != b) {
       if (a->is_var()) {
+        if (occ(a, b, p)) {
+          return false;
+        }
         p[a] = b;
       } else if (b->is_var()) {
+        if (occ(b, a, p)) {
+          return false;
+        }
         p[b] = a;
       } else {
         if (a->f == b->f && a->xs.size() == b->xs.size()) {
