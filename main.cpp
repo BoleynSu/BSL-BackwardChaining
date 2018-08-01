@@ -15,9 +15,9 @@ int main(int argc, char* argv[]) {
   cout << "| ?- ";
   while (!quries_parser.accept(END)) {
     auto ans = solver.solve(quries_parser.parse_expr());
+    quries_parser.expect(DOT);
     cout << endl;
     cout << (ans ? "yes" : "no") << endl;
-    quries_parser.expect(DOT);
     cout << "| ?- ";
   }
   cout << endl;
