@@ -1,5 +1,5 @@
 # backward-chaining
-A Prolog like language using backward chaining algorithm
+A Prolog like language using backward chaining algorithm. This is part of BSL (a.k.a Boleyn Su's Language) project.
 
 Compile main.cpp and then run the excuatable with an argument which is the path to the rules and facts. Then you can do some queries.
 
